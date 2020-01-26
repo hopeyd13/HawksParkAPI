@@ -12,7 +12,7 @@ const Space = function(space) {
     this.typeID = spaces.Type_ID;
 };
 
-Spaces.getAll = result => {
+Space.getAll = result => {
     sql.query("SELECT * FROM spaces", (err, res) => {
         if(err) {
             console.log("error:", err);
@@ -85,7 +85,7 @@ Space.findAvailSpacesInLot = (lotID, result) => {
     });
 };
 
-Spaces.findClosedSpaces = result => {
+Space.findClosedSpaces = result => {
     sql.query("SELECT * FROM spaces WHERE space.Status = 2", (err, res) => {
         if(err) {
             console.log("error: ", err);
