@@ -61,7 +61,7 @@ Space.findOccupied = result => {
     });
 };
 
-Space.findSpacesInRow = (rowID, result) => {
+Space.findAvailSpacesInRow = (rowID, result) => {
     sql.query("SELECT * FROM spaces WHERE space.Status = 1 and space.Rows_ID = rowID", (err, res) => {
         if(err) {
             console.log("error: ", err);
@@ -73,7 +73,7 @@ Space.findSpacesInRow = (rowID, result) => {
     });
 };
 
-Space.findSpacesInLot = (lotID, result) => {
+Space.findAvailSpacesInLot = (lotID, result) => {
     sql.query("SELECT * FROM spaces WHERE space.Status = 1 and space.Lots_ID = lotID", (err, res) => {
         if(err) {
             console.log("error: ", err);
