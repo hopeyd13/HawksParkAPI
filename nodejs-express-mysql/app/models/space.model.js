@@ -134,7 +134,7 @@ Space.markSpaceAvail = (id, space, result) => {
             return;
         }
         
-        console.log("updates space: ", {id: id, ...soace});
+        console.log("updates space: ", {id: id, ...space});
         result(null, {id: id, ...space});
     }
     );

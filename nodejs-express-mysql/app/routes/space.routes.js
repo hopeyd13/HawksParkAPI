@@ -1,5 +1,5 @@
 module.exports = app => {
-    const spaces = require("../controllers/spaces.controller.js");
+    const spaces = require("../controllers/space.controller.js");
 
     //get all spaces
     app.get("/spaces", spaces.getAll);
@@ -29,5 +29,5 @@ module.exports = app => {
     app.get("/spaces/:rowID", spaces.findClosedSpacesInRow);
 
     //update a space to set as available
-    app.get("/spaces/:spaceID", spaces.markSpaceAvail);
+    app.put("/spaces/:spaceID", spaces.markSpaceAvail);
 }
