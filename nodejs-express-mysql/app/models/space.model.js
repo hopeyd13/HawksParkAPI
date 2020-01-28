@@ -2,7 +2,6 @@ const sql = require("C:/Users/hoped/Documents/Practicum/API/nodejs-express-mysql
 
 //constructor
 const Space = function(space) {
-    this.id = space.ID;
     this.desc = space.Desc;
     this.status = space.Status;
     this.lat = space.Lat;
@@ -10,6 +9,19 @@ const Space = function(space) {
     this.rowID = spaces.Rows_ID;
     this.lotID = spaces.Lots_ID;
     this.typeID = spaces.Type_ID;
+};
+
+Space.create = (newSpace, result) => {
+    sql.query("INSERT INTO spaces SET ?", newSpace, (err, res) => {
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        console.log("created space: ", {id: res.insertId, ...newSpace});
+        result(null, { id: res.insertId, ...newSpace});
+    });
 };
 
 Space.getAll = result => {

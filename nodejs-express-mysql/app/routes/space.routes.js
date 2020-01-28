@@ -1,6 +1,9 @@
 module.exports = app => {
-    const spaces = require("../controllers/space.controller.js");
+    const spaces = require("C:/Users/hoped/Documents/Practicum/API/nodejs-express-mysql/app/controllers/space.controller.js");
 
+    //create a new space
+    app.post("/spaces", spaces.create);
+    
     //get all spaces
     app.get("/spaces", spaces.getAll);
 
