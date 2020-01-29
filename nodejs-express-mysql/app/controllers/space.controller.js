@@ -1,4 +1,4 @@
-const Space = require("C:/Users/hoped/Documents/Practicum/API/nodejs-express-mysql/app/models/space.model.js");
+const Space = require("../models/space.model.js");
 
 //create and save a new space
 exports.create = (req, res) => {

@@ -1,4 +1,4 @@
-const sql = require("C:/Users/hoped/Documents/Practicum/API/nodejs-express-mysql/app/models/db.js");
+const sql = require("./db.js");
 
 //constructor
 const Space = function(space) {

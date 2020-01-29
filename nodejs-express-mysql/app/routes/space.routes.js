@@ -1,5 +1,5 @@
 module.exports = app => {
-    const spaces = require("C:/Users/hoped/Documents/Practicum/API/nodejs-express-mysql/app/controllers/space.controller.js");
+    const spaces = require("../controllers/space.controller.js");
 
     //create a new space
     app.post("/spaces", spaces.create);
@@ -8,7 +8,7 @@ module.exports = app => {
     app.get("/spaces", spaces.getAll);
 
     //get all available spaces
-    app.get("/spaces:", spaces.findAvail);
+    app.get("/spaces", spaces.findAvail);
 
     //get all handicap spaces
     app.get("/spaces", spaces.findAvailHandicap);
