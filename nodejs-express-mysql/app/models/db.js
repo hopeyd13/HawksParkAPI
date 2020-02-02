@@ -9,10 +9,8 @@ const connection = mysql.createConnection({
   database: dbConfig.DB
 });
 
-console.log('in dbjs');
 // open the MySQL connection
 connection.connect(error => {
-  //console.log("connection.connect from db.js");
   if (error) throw error;
   console.log('Successfully connected to the database.');
 });
