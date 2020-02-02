@@ -52,7 +52,7 @@ exports.update = (req, res) => {
         });
     }
 
-    Space.markSpaceAvail(
+    exports.markSpaceAvail(
         req.params.spaceID,
         new Space (req.body),
         (err, data) => {

@@ -6,9 +6,9 @@ const Space = function(space) {
     this.status = space.Status;
     this.lat = space.Lat;
     this.long = space.Long;
-    this.rowID = spaces.Rows_ID;
-    this.lotID = spaces.Lots_ID;
-    this.typeID = spaces.Type_ID;
+    this.rowID = space.Rows_ID;
+    this.lotID = space.Lots_ID;
+    this.typeID = space.Type_ID;
 };
 
 Space.create = (newSpace, result) => {
@@ -133,21 +133,47 @@ Space.findClosedSpacesInRow = (rowID, result) => {
     });
 };
 
-Space.markSpaceAvail = (id, space, result) => {
-    sql.query("UPDATE spaces SET space.Status = 1", (err, res) => {
-        if(err){
-            console.log("error: ", err);
-            result(null, err);
-            return;
-        }
-        if(res.affectedRows == 0){
-            //not found Space with the ID
-            result({kind: "not_found"}, null);
-            return;
-        }
+// Space.markSpaceAvail = (id, space, result) => {
+//     sql.query("UPDATE spaces SET space.Status = 1", (err, res) => {
+//         if(err){
+//             console.log("error: ", err);
+//             result(null, err);
+//             return;
+//         }
+//         if(res.affectedRows == 0){
+//             //not found Space with the ID
+//             result({kind: "not_found"}, null);
+//             return;
+//         }
         
-        console.log("updates space: ", {id: id, ...space});
-        result(null, {id: id, ...space});
-    }
+//         console.log("updates space: ", {id: id, ...space});
+//         result(null, {id: id, ...space});
+//     }
+//     );
+// };
+
+
+Space.markSpaceAvail = (id, space, result) => {
+    sql.query(
+      "UPDATE spaces SET desc = ?, status = 0, lat = ?, long = ?, rowID = ?, lotID = ?, typeID = ? WHERE id = ?",
+      [space.desc, space.lat, space.long, space.rowID, space.lotID, space.typeID, id],
+      (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(null, err);
+          return;
+        }
+  
+        if (res.affectedRows == 0) {
+          // not found Space with the id
+          result({ kind: "not_found" }, null);
+          return;
+        }
+  
+        console.log("updated space: ", { id: id, ...space });
+        result(null, { id: id, ...space });
+      }
     );
-};
+  };
+
+module.exports = Space;
