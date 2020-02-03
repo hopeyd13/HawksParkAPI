@@ -54,6 +54,28 @@ exports.findAvail = (req, res) => {
     });
 }
 
+exports.findAvailSpacesInRow = (req, res) => {
+    Space.findAvailSpacesInRow((err, data) => {
+        if(err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving available handicapped spaces"
+            });
+        else res.send(data);
+    });
+};
+
+exports.findAvailSpacesInLot = (req, res) => {
+    Space.findAvailSpacesInLot((err, data) => {
+        if(err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving available handicapped spaces"
+            });
+        else res.send(data);
+    });
+};
+
 exports.findAvailHandicap = (req, res) => {
     Space.findAvailHandicap((err, data) => {
         if(err)
@@ -76,8 +98,8 @@ exports.findOccupied = (req, res) => {
     });
 };
 
-exports.findAvailSpacesInRow = (req, res) => {
-    Space.findAvailSpacesInRow((err, data) => {
+exports.findOccupiedSpacesInRow = (req, res) => {
+    Space.findOccSpacesInRow((err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -87,8 +109,41 @@ exports.findAvailSpacesInRow = (req, res) => {
     });
 };
 
-exports.findAvailSpacesInLot = (req, res) => {
-    Space.findAvailSpacesInLot((err, data) => {
+exports.findOccupiedSpacesInLot = (req, res) => {
+    Space.findOccSpacesInLot((err, data) => {
+        if(err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving available handicapped spaces"
+            });
+        else res.send(data);
+    });
+};
+
+exports.findReservedSpaces = (req, res) => {
+    Space.findReservedSpaces((err, data) => {
+        if(err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving available handicapped spaces"
+            });
+        else res.send(data);
+    });
+};
+
+exports.findReservedSpacesInRow = (req, res) => {
+    Space.findReservedSpacesInRow((err, data) => {
+        if(err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving available handicapped spaces"
+            });
+        else res.send(data);
+    });
+};
+
+exports.findReservedSpacesInLot = (req, res) => {
+    Space.findReservedSpacesInLot((err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -187,33 +242,6 @@ exports.markOcc = (req, res) => {
     );
 };
 
-exports.markClosed = (req, res) => {
-    //validate request
-    if(!req.body){
-        res.status(400).send({
-            message: "Content can not be empty!"
-        });
-    }
-
-    Space.markSpaceClosed(
-        req.params.spaceID,
-        new Space (req.body),
-        (err, data) => {
-            if(err){
-                if(err.kind === "not_found"){
-                    res.status(404).send({
-                        message: `Not found space with id ${req.params.spaceID}.`
-                    });
-                } else {
-                    res.status(500).send({
-                        message: "Error updating Space with id " + req.params.spaceID
-                    });
-                }
-            } else res.send(data);
-        }
-    );
-};
-
 exports.markReserved = (req, res) => {
     //validate request
     if(!req.body){
@@ -241,35 +269,29 @@ exports.markReserved = (req, res) => {
     );
 };
 
-exports.findReservedSpaces = (req, res) => {
-    Space.findReservedSpaces((err, data) => {
-        if(err)
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
-            });
-        else res.send(data);
-    });
-};
+exports.markClosed = (req, res) => {
+    //validate request
+    if(!req.body){
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
 
-exports.findReservedSpacesInRow = (req, res) => {
-    Space.findReservedSpacesInRow((err, data) => {
-        if(err)
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
-            });
-        else res.send(data);
-    });
-};
-
-exports.findReservedSpacesInLot = (req, res) => {
-    Space.findReservedSpacesInLot((err, data) => {
-        if(err)
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
-            });
-        else res.send(data);
-    });
+    Space.markSpaceClosed(
+        req.params.spaceID,
+        new Space (req.body),
+        (err, data) => {
+            if(err){
+                if(err.kind === "not_found"){
+                    res.status(404).send({
+                        message: `Not found space with id ${req.params.spaceID}.`
+                    });
+                } else {
+                    res.status(500).send({
+                        message: "Error updating Space with id " + req.params.spaceID
+                    });
+                }
+            } else res.send(data);
+        }
+    );
 };

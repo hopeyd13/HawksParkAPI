@@ -38,37 +38,13 @@ Space.getAll = result => {
 };
 
 Space.findAvail = result => {
-    sql.query("SELECT * FROM spaces WHERE `Type_ID` <> 5", (err, res) => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 1 and `Type_ID` <> 5", (err, res) => {
         if(err) {
             console.log("error: ", err);
             result(null, err);
             return;
         }
         console.log("Available spaces: ", res);
-        result(null, res);
-    });
-};
-
-Space.findAvailHandicap = result => {
-    sql.query("SELECT * FROM spaces WHERE `Status` = 1 and `Type_ID` = 5", (err, res) => {
-        if(err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
-        }
-        console.log("Available Handicap spaces: ", res);
-        result(null, res);
-    });
-};
-
-Space.findOccupied = result => {
-    sql.query("SELECT * FROM spaces WHERE `Status` = 5", (err, res) => {
-        if(err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
-        }
-        console.log("All Occupied spaces: ", res);
         result(null, res);
     });
 };
@@ -97,8 +73,92 @@ Space.findAvailSpacesInLot = (lotID, result) => {
     });
 };
 
-Space.findClosedSpaces = result => {
+Space.findAvailHandicap = result => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 1 and `Type_ID` = 5", (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("Available Handicap spaces: ", res);
+        result(null, res);
+    });
+};
+
+Space.findOccupied = result => {
     sql.query("SELECT * FROM spaces WHERE `Status` = 2", (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("All Occupied spaces: ", res);
+        result(null, res);
+    });
+};
+
+Space.findOccSpacesInRow = (rowID, result) => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 2 and `Rows_ID` = rowID", (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("Available spaces in row " + rowID + ": ", res);
+        result(null, res);
+    });
+};
+
+Space.findOccSpacesInLot = (lotID, result) => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 2 and `Lots_ID` = lotID", (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("Available spaces in lot " + lotID + ": ", res);
+        result(null, res);
+    });
+};
+
+Space.findReservedSpaces = result => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 3", (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("Closed spaces: ", res);
+        result(null, res);
+    });
+}
+
+Space.findReservedSpacesInRow = (rowID, result) => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 3 and `Rows_ID` = rowID", (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("Closed spaces in row " + rowID + ": ", res);
+        result(null, res);
+    });
+};
+
+Space.findReservedSpacesInLot = (lotID, result) => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 3 and `Lots_ID` = lotID", (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("Closed spaces in lot " + lotID + ": ", res);
+        result(null, res);
+    });
+};
+
+Space.findClosedSpaces = result => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 4", (err, res) => {
         if(err) {
             console.log("error: ", err);
             result(null, err);
@@ -110,7 +170,7 @@ Space.findClosedSpaces = result => {
 }
 
 Space.findClosedSpacesInLot = (lotID, result) => {
-    sql.query("SELECT * FROM spaces WHERE `Status` = 2 and `Lots_ID` = lotID", (err, res) => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 4 and `Lots_ID` = lotID", (err, res) => {
         if(err) {
             console.log("error: ", err);
             result(null, err);
@@ -122,7 +182,7 @@ Space.findClosedSpacesInLot = (lotID, result) => {
 };
 
 Space.findClosedSpacesInRow = (rowID, result) => {
-    sql.query("SELECT * FROM spaces WHERE `Status` = 2 and `Rows_ID` = rowID", (err, res) => {
+    sql.query("SELECT * FROM spaces WHERE `Status` = 4 and `Rows_ID` = rowID", (err, res) => {
         if(err) {
             console.log("error: ", err);
             result(null, err);
@@ -182,30 +242,6 @@ Space.markSpaceOcc = (id, space, result) => {
     result(null, { id: id, ...space });
   };
 
-  Space.markSpaceClosed = (id, space, result) => {
-    sql.query(
-      "UPDATE spaces SET `Desc` = ?, `Status` = 4, `Lat` = ?, `Long` = ?, `Rows_ID` = ?, `Lots_ID` = ?, `Type_ID` = ? WHERE id = ?",
-      [space.desc, space.lat, space.long, space.rowID, space.lotID, space.typeID, id],
-      (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-          result(null, err);
-          return;
-        }
-  
-        if (res.affectedRows == 0) {
-          // not found Space with the id
-          result({ kind: "not_found" }, null);
-          return;
-        }
-  
-      }
-    );
-    
-    console.log("updated space: ", { id: id, ...space });
-    result(null, { id: id, ...space });
-  };
-
   Space.markSpaceReserved = (id, space, result) => {
     sql.query(
       "UPDATE spaces SET `Desc` = ?, `Status` = 3, `Lat` = ?, `Long` = ?, `Rows_ID` = ?, `Lots_ID` = ?, `Type_ID` = ? WHERE id = ?",
@@ -230,40 +266,28 @@ Space.markSpaceOcc = (id, space, result) => {
     result(null, { id: id, ...space });
   };
 
-  Space.findReservedSpaces = result => {
-    sql.query("SELECT * FROM spaces WHERE `Status` = 3", (err, res) => {
-        if(err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
+  Space.markSpaceClosed = (id, space, result) => {
+    sql.query(
+      "UPDATE spaces SET `Desc` = ?, `Status` = 4, `Lat` = ?, `Long` = ?, `Rows_ID` = ?, `Lots_ID` = ?, `Type_ID` = ? WHERE id = ?",
+      [space.desc, space.lat, space.long, space.rowID, space.lotID, space.typeID, id],
+      (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(null, err);
+          return;
         }
-        console.log("Closed spaces: ", res);
-        result(null, res);
-    });
-}
-
-Space.findReservedSpacesInLot = (lotID, result) => {
-    sql.query("SELECT * FROM spaces WHERE `Status` = 3 and `Lots_ID` = lotID", (err, res) => {
-        if(err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
+  
+        if (res.affectedRows == 0) {
+          // not found Space with the id
+          result({ kind: "not_found" }, null);
+          return;
         }
-        console.log("Closed spaces in lot " + lotID + ": ", res);
-        result(null, res);
-    });
-};
-
-Space.findReservedSpacesInRow = (rowID, result) => {
-    sql.query("SELECT * FROM spaces WHERE `Status` = 3 and `Rows_ID` = rowID", (err, res) => {
-        if(err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
-        }
-        console.log("Closed spaces in row " + rowID + ": ", res);
-        result(null, res);
-    });
-};
+  
+      }
+    );
+    
+    console.log("updated space: ", { id: id, ...space });
+    result(null, { id: id, ...space });
+  };
 
 module.exports = Space;
