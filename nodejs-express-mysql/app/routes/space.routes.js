@@ -10,11 +10,11 @@ module.exports = app => {
     //get all available spaces
     app.get("/spaces/findAvail", spaces.findAvail);
 
-    //get all spaces in a row
-    app.get("/spaces/findAvailSpacesInRow/:rowID", spaces.findAvailSpacesInRow);
+    //get available spaces in a row
+    app.get("/spaces/findAvailInRow/:rowID", spaces.findAvailSpacesInRow);
 
-    //get all spaces in a lot
-    app.get("/spaces/findAvailSpacesInLot/:lotID", spaces.findAvailSpacesInLot);
+    //get available spaces in a lot
+    app.get("/spaces/findAvailInLot/:lotID", spaces.findAvailSpacesInLot);
 
     //get all handicap spaces
     app.get("/spaces/findHandicap", spaces.findAvailHandicap);
@@ -22,40 +22,39 @@ module.exports = app => {
     //get all occupied spaces
     app.get("/spaces/findOccupied", spaces.findOccupied);
 
-    //get all occupied spaces in row
+    //get occupied spaces in row
     app.get("/spaces/findOccupiedInRow/:rowID", spaces.findOccupiedSpacesInRow);
 
-    //get all occupied spaces in lot
+    //get occupied spaces in lot
     app.get("/spaces/findOccupiedInLot/:lotID", spaces.findOccupiedSpacesInLot);
 
     //get all reserved spaces
-    app.get("/spaces/reservedSpaces", spaces.findReservedSpaces);
+    app.get("/spaces/findReserved", spaces.findReservedSpaces);
 
-    //get all reserved spaces in a row
-    app.get("/spaces/reservedSpacesInRow/:rowID", spaces.findReservedSpacesInRow);
+    //get reserved spaces in a row
+    app.get("/spaces/findReservedInRow/:rowID", spaces.findReservedSpacesInRow);
     
-    //get all reserved spaces in a lot
-    app.get("/spaces/reservedSpacesInLot/:lotID", spaces.findReservedSpacesInLot);
+    //get reserved spaces in a lot
+    app.get("/spaces/findReservedInLot/:lotID", spaces.findReservedSpacesInLot);
 
     //get all closed spaces
-    app.get("/spaces/closedSpaces", spaces.findClosedSpaces);
+    app.get("/spaces/findClosed", spaces.findClosedSpaces);
 
-    //get all closed spaces in a lot
-    app.get("/spaces/closedSpacesInLot/:lotID", spaces.findClosedSpacesInLot);
+    //get closed spaces in a lot
+    app.get("/spaces/findClosedInLot/:lotID", spaces.findClosedSpacesInLot);
 
-    //get all closed spaces in a row
-    app.get("/spaces/closedSpacesInRow/:rowID", spaces.findClosedSpacesInRow);
+    //get closed spaces in a row
+    app.get("/spaces/findClosedInRow/:rowID", spaces.findClosedSpacesInRow);
 
-    //update a space to set as available
+    //set a space status to available
     app.put("/spaces/markSpaceAvail/:spaceID", spaces.markAvail);
 
-    //update a space to set as occupied
+    //set a space status to occupied
     app.put("/spaces/markSpaceOcc/:spaceID", spaces.markOcc);
 
-    //mark a space as reserved
+    //set a space status to reserved
     app.put("/spaces/markSpaceReserved/:spaceID", spaces.markReserved);
     
-    //mark a space as closed
-    app.put("/spaces/markSpaceClosed/:spaceID", spaces.markClosed);
-    
+    //set a space to closed
+    app.put("/spaces/markSpaceClosed/:spaceID", spaces.markClosed);    
 }

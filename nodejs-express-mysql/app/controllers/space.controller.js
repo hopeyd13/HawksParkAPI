@@ -31,7 +31,7 @@ exports.create = (req, res) => {
     });
 };
 
-//retrieve node all spaces from database
+//retrieve all spaces from database
 exports.findAll = (req, res) => {
     Space.getAll((err, data) => {
         if(err)
@@ -43,6 +43,7 @@ exports.findAll = (req, res) => {
     });
 };
 
+//returns all available spaces in db
 exports.findAvail = (req, res) => {
     Space.findAvail((err, data) => {
         if(err)
@@ -54,8 +55,11 @@ exports.findAvail = (req, res) => {
     });
 }
 
+//returns available spaceas in row
 exports.findAvailSpacesInRow = (req, res) => {
-    Space.findAvailSpacesInRow((err, data) => {
+    Space.findAvailSpacesInRow(
+        req.params.rowID,
+        (err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -65,8 +69,11 @@ exports.findAvailSpacesInRow = (req, res) => {
     });
 };
 
+//returns available spaces in a lot
 exports.findAvailSpacesInLot = (req, res) => {
-    Space.findAvailSpacesInLot((err, data) => {
+    Space.findAvailSpacesInLot(
+        req.params.lotID,
+        (err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -76,6 +83,7 @@ exports.findAvailSpacesInLot = (req, res) => {
     });
 };
 
+//returns handicap spaces
 exports.findAvailHandicap = (req, res) => {
     Space.findAvailHandicap((err, data) => {
         if(err)
@@ -87,6 +95,7 @@ exports.findAvailHandicap = (req, res) => {
     });
 };
 
+//returns all occupied spaces in db
 exports.findOccupied = (req, res) => {
     Space.findOccupied((err, data) => {
         if(err)
@@ -98,8 +107,11 @@ exports.findOccupied = (req, res) => {
     });
 };
 
+//returns occupied spaces in a row
 exports.findOccupiedSpacesInRow = (req, res) => {
-    Space.findOccSpacesInRow((err, data) => {
+    Space.findOccSpacesInRow(
+        req.params.rowID,
+        (err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -109,8 +121,11 @@ exports.findOccupiedSpacesInRow = (req, res) => {
     });
 };
 
+//returns occupied spaces in a lot
 exports.findOccupiedSpacesInLot = (req, res) => {
-    Space.findOccSpacesInLot((err, data) => {
+    Space.findOccSpacesInLot(
+        req.params.lotID,
+        (err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -120,6 +135,7 @@ exports.findOccupiedSpacesInLot = (req, res) => {
     });
 };
 
+//returns all reserved spaces in db
 exports.findReservedSpaces = (req, res) => {
     Space.findReservedSpaces((err, data) => {
         if(err)
@@ -131,8 +147,11 @@ exports.findReservedSpaces = (req, res) => {
     });
 };
 
+//returns reserved spaces in a row
 exports.findReservedSpacesInRow = (req, res) => {
-    Space.findReservedSpacesInRow((err, data) => {
+    Space.findReservedSpacesInRow(
+        req.params.rowID,
+        (err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -142,8 +161,11 @@ exports.findReservedSpacesInRow = (req, res) => {
     });
 };
 
+//returns reserved spaces in a lot
 exports.findReservedSpacesInLot = (req, res) => {
-    Space.findReservedSpacesInLot((err, data) => {
+    Space.findReservedSpacesInLot(
+        req.params.lotID,
+        (err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -153,6 +175,7 @@ exports.findReservedSpacesInLot = (req, res) => {
     });
 };
 
+//returns all closed spaces in db
 exports.findClosedSpaces = (req, res) => {
     Space.findClosedSpaces((err, data) => {
         if(err)
@@ -164,8 +187,11 @@ exports.findClosedSpaces = (req, res) => {
     });
 };
 
+//returns closed spaces in a row
 exports.findClosedSpacesInRow = (req, res) => {
-    Space.findClosedSpacesInRow((err, data) => {
+    Space.findClosedSpacesInRow(
+        req.params.rowID,
+        (err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -175,8 +201,11 @@ exports.findClosedSpacesInRow = (req, res) => {
     });
 };
 
+//returns closed spaces in a lot
 exports.findClosedSpacesInLot = (req, res) => {
-    Space.findClosedSpacesInLot((err, data) => {
+    Space.findClosedSpacesInLot(
+        req.params.lotID,
+        (err, data) => {
         if(err)
             res.status(500).send({
                 message:
@@ -187,7 +216,7 @@ exports.findClosedSpacesInLot = (req, res) => {
 };
 
 
-//mark a space available
+//sets a space's status to available
 exports.markAvail = (req, res) => {
     //validate request
     if(!req.body){
@@ -198,7 +227,7 @@ exports.markAvail = (req, res) => {
 
     Space.markSpaceAvail(
         req.params.spaceID,
-        new Space (req.body),
+        req.body,
         (err, data) => {
             if(err){
                 if(err.kind === "not_found"){
@@ -215,6 +244,7 @@ exports.markAvail = (req, res) => {
     );
 };
 
+//sets a space's status to occupied
 exports.markOcc = (req, res) => {
     //validate request
     if(!req.body){
@@ -225,7 +255,7 @@ exports.markOcc = (req, res) => {
 
     Space.markSpaceOcc(
         req.params.spaceID,
-        new Space (req.body),
+        req.body,
         (err, data) => {
             if(err){
                 if(err.kind === "not_found"){
@@ -242,6 +272,7 @@ exports.markOcc = (req, res) => {
     );
 };
 
+//sets a space's status to reserved
 exports.markReserved = (req, res) => {
     //validate request
     if(!req.body){
@@ -252,7 +283,7 @@ exports.markReserved = (req, res) => {
 
     Space.markSpaceReserved(
         req.params.spaceID,
-        new Space (req.body),
+        req.body,
         (err, data) => {
             if(err){
                 if(err.kind === "not_found"){
@@ -269,6 +300,7 @@ exports.markReserved = (req, res) => {
     );
 };
 
+//sets a space's status to closed
 exports.markClosed = (req, res) => {
     //validate request
     if(!req.body){
@@ -279,7 +311,7 @@ exports.markClosed = (req, res) => {
 
     Space.markSpaceClosed(
         req.params.spaceID,
-        new Space (req.body),
+        req.body,
         (err, data) => {
             if(err){
                 if(err.kind === "not_found"){
