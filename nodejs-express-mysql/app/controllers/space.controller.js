@@ -11,13 +11,13 @@ exports.create = (req, res) => {
 
     //create a space
     const Space = new Space({
-        desc: req.body.desc,
-        status: req.body.status,
-        lat: req.body.lat,
-        long: req.body.long,
-        rowID: req.body.rowID,
-        lotID: req.body.lotID,
-        typeID: req.body.typeID
+        desc: req.body.Desc,
+        status: req.body.Status,
+        lat: req.body.Lat,
+        long: req.body.Long,
+        rowID: req.body.Rows_ID,
+        lotID: req.body.Lots_ID,
+        typeID: req.body.Type_ID
     });
 
     //save space in the database
@@ -37,7 +37,7 @@ exports.findAll = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving all spaces."
+                    err.message || "Some error occurred while retrieving all spaces in database."
             });
          else res.send(data);
     });
@@ -63,7 +63,7 @@ exports.findAvailSpacesInRow = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving available spaces in row"
             });
         else res.send(data);
     });
@@ -77,7 +77,7 @@ exports.findAvailSpacesInLot = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving available spaces in lot"
             });
         else res.send(data);
     });
@@ -101,7 +101,7 @@ exports.findOccupied = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving occupied spaces in database"
             });
         else res.send(data);
     });
@@ -115,7 +115,7 @@ exports.findOccupiedSpacesInRow = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving occupied spaces in row"
             });
         else res.send(data);
     });
@@ -129,7 +129,7 @@ exports.findOccupiedSpacesInLot = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving occupied spaces in lot"
             });
         else res.send(data);
     });
@@ -141,7 +141,7 @@ exports.findReservedSpaces = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving reserved spaces in database"
             });
         else res.send(data);
     });
@@ -155,7 +155,7 @@ exports.findReservedSpacesInRow = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving reserved spaces in row"
             });
         else res.send(data);
     });
@@ -169,7 +169,7 @@ exports.findReservedSpacesInLot = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving reserved spaces in lot"
             });
         else res.send(data);
     });
@@ -181,7 +181,7 @@ exports.findClosedSpaces = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving closed spaces in database"
             });
         else res.send(data);
     });
@@ -195,7 +195,7 @@ exports.findClosedSpacesInRow = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving closed spaces in row"
             });
         else res.send(data);
     });
@@ -209,7 +209,7 @@ exports.findClosedSpacesInLot = (req, res) => {
         if(err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving available handicapped spaces"
+                    err.message || "Some error occurred while retrieving closed spaces in lot"
             });
         else res.send(data);
     });
@@ -224,7 +224,6 @@ exports.markAvail = (req, res) => {
             message: "Content can not be empty!"
         });
     }
-
     Space.markSpaceAvail(
         req.params.spaceID,
         req.body,
@@ -240,8 +239,7 @@ exports.markAvail = (req, res) => {
                     });
                 }
             } else res.send(data);
-        }
-    );
+        });
 };
 
 //sets a space's status to occupied
@@ -326,4 +324,30 @@ exports.markClosed = (req, res) => {
             } else res.send(data);
         }
     );
+};
+
+exports.lotInfo = (req, res) => {
+    Space.lotInfo(
+        req.params.lotID,
+        (err, data) => {
+        if(err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving lot information"
+            });
+        else res.send(data);
+    });
+};
+
+exports.rowInfo = (req, res) => {
+    Space.rowInfo(
+        req.params.rowID,
+        (err, data) => {
+        if(err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving row information"
+            });
+        else res.send(data);
+    });
 };

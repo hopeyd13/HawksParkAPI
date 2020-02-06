@@ -220,7 +220,7 @@ Space.findClosedSpacesInLot = (lotID, result) => {
 //sets a space's status to available
 Space.markSpaceAvail = (id, space, result) => {
     sql.query(
-      "UPDATE spaces SET `Status` = 1 WHERE id = id",
+      "UPDATE spaces SET `Status` = 1 WHERE `ID` = ?", [id],
       (err, res) => {
         if (err) {
           console.log("error: ", err);
@@ -241,7 +241,7 @@ Space.markSpaceAvail = (id, space, result) => {
 //sets a space's status to occupied
 Space.markSpaceOcc = (id, space, result) => {
     sql.query(
-      "UPDATE spaces SET `Status` = 2 WHERE id = id",
+      "UPDATE spaces SET `Status` = 2 WHERE `ID` = ?", [id],
       (err, res) => {
         if (err) {
           console.log("error: ", err);
@@ -262,7 +262,7 @@ Space.markSpaceOcc = (id, space, result) => {
 //sets a space's status to reserved
 Space.markSpaceReserved = (id, space, result) => {
    sql.query(
-      "UPDATE spaces SET `Status` = 3 WHERE id = id",
+      "UPDATE spaces SET `Status` = 3 WHERE id = ?", [id],
       (err, res) => {
         if (err) {
           console.log("error: ", err);
@@ -283,7 +283,7 @@ Space.markSpaceReserved = (id, space, result) => {
 //sets a space's status to closed
 Space.markSpaceClosed = (id, space, result) => {
     sql.query(
-      "UPDATE spaces SET `Status` = 4 WHERE id = id",
+      "UPDATE spaces SET `Status` = 4 WHERE id = ?", [id],
       (err, res) => {
         if (err) {
           console.log("error: ", err);
@@ -301,6 +301,32 @@ Space.markSpaceClosed = (id, space, result) => {
       });
 };
 
-//returns all spaces in a lot and only displays ID and status
+//returns all spaces in a lot and only displays ID and status - Nick
+Space.lotInfo = (lotID, result) => {
+    sql.query("SELECT id, status, `Rows_ID` FROM spaces WHERE `Lots_ID` = ?", [lotID],
+    (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("Information for lot: " + lotID + ": ", res);
+        result(null, res);
+    });
+};
+
+//returns row ID and status of spaces - Mo
+Space.rowInfo = (rowID, result) => {
+    sql.query("SELECT id, status, `Rows_ID` FROM spaces WHERE `Rows_ID` = ?", [rowID],
+    (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        console.log("Information for row: " + rowID + ": ", res);
+        result(null, res);
+    });
+};
 
 module.exports = Space;

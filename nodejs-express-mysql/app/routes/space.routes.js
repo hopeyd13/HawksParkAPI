@@ -57,4 +57,10 @@ module.exports = app => {
     
     //set a space to closed
     app.put("/spaces/markSpaceClosed/:spaceID", spaces.markClosed);    
+
+    //get information for all spaces in lot
+    app.get("/spaces/lotInfo/:lotID", spaces.lotInfo);
+
+    //get information for all spaces in row
+    app.get("/spaces/rowInfo/:rowID", spaces.rowInfo);
 }
